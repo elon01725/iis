@@ -1,0 +1,38 @@
+---                                             
+driver:                                         
+  name: ec2                                     
+  aws_ssh_key_id: key-tk1
+  region: us-east-1                             
+  availability_zone: b                          
+  subnet_id: subnet-0028e52b                    
+  instance_type: t2.large                       
+  image_id: ami-090d8565d2b7ea80d               
+  security_group_ids: ["sg-3aa7a341"]           
+  retryable_tries: 120                          
+                                                
+provisioner:                                    
+  name: chef_zero                               
+                                                
+verifier:                                       
+  name: inspec                                  
+                                                
+transport:                                      
+  name: winrm                                   
+  elevated: true                                
+  username: Administrator                       
+  password: Cod3Can!                          
+                                                
+platforms:                                      
+  - name: windows-2012R2                        
+    driver:                                     
+      customize:                                
+        memory: 4096                            
+                                                
+suites:                                         
+  - name: default                               
+    run_list:                                   
+      - recipe[workstation::default]         
+    verifier:                                   
+      inspec_tests:                             
+        - test/integration/default                    
+    attributes:                                 
